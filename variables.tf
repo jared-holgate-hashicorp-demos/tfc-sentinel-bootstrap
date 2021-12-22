@@ -1,29 +1,26 @@
 variable "prefix" {
-  type    = string
-  default = "tfc-sentinel-demo"
+  type        = string
+  default     = "tfc-sentinel-demo"
   description = "String prefix for the workspace and policy-sets"
 }
 
 variable "tfguides_template_owner" {
-  type    = string
-  default = "richard-russell"
+  type        = string
   description = "Github organization of the fork of hashicorp/terraform-guides used as a template"
 }
 
 variable "tfguides_template_repository" {
-  type    = string
-  default = "terraform-guides"
+  type        = string
   description = "Github repository of the fork of hashicorp/terraform-guides used as a template"
 }
 
 variable "organization" {
-  type    = string
-  default = "richard-russell-org"
+  type        = string
   description = "TFC/TFE organization used for the demo"
 }
 
-variable "github_policy_token" {
+variable "github_token" {
   type        = string
-  description = "github oauth token for attaching policy set"
+  description = "github oauth token for creating repos and attaching policy set"
 }
 

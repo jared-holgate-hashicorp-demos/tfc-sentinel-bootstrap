@@ -13,9 +13,18 @@ terraform {
       version = "3.1.0"
     }
   }
+
+  cloud {
+    organization = "richard-russell-org"
+    workspaces {
+      name = "tfc-sentinel-bootstrap"
+    }
+  }
+
 }
 
 provider "github" {
+  token = var.github_token
   # Configuration options
 }
 
