@@ -24,8 +24,8 @@ terraform {
 }
 
 provider "github" {
-  token = var.github_token
   # Configuration options
+  token = var.github_token
 }
 
 provider "tfe" {
