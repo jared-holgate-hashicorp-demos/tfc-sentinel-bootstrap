@@ -4,8 +4,7 @@ resource "random_pet" "prefix" {
   prefix = var.prefix
 }
 
-
-# Create copy of terraform-guides repo to for use as a source for policy-sets
+# Create copy of terraform-guides repo to use as a source for policy-sets
 # Requires a local fork of terraform-guides configured as a template
 resource "github_repository" "terraform-guides" {
   name        = "${random_pet.prefix.id}-terraform-guides"
