@@ -48,10 +48,15 @@ resource "github_repository" "self-service" {
 resource "tfe_workspace" "demo" {
   name         = random_pet.prefix.id
   organization = var.organization
-  tag_names    = ["demo", "app"]
+  tag_names    = ["demo", "selfservice"]
+  vcs_repo {
+    identifier     = github_repository.self-service.full_name
+    oauth_token_id = tfe_oauth_client.demo.oauth_token_id
+  }
+
 }
 
-# Create OAUTH client to use for attaching policy-sets
+# Create OAUTH client to use for VCS-backed repos and attaching policy-sets
 resource "tfe_oauth_client" "demo" {
   organization     = var.organization
   api_url          = "https://api.github.com"
