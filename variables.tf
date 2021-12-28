@@ -4,14 +4,16 @@ variable "prefix" {
   description = "String prefix for the workspace and policy-sets"
 }
 
-variable "tfguides_template_owner" {
+variable "tfguides_template" {
   type        = string
-  description = "Github organization of the fork of hashicorp/terraform-guides used as a template"
+  default     = "richard-russell/terraform-guides"
+  description = "Github path of the fork of hashicorp/terraform-guides used as a template for the policies"
 }
 
-variable "tfguides_template_repository" {
+variable "self_service_template" {
   type        = string
-  description = "Github repository of the fork of hashicorp/terraform-guides used as a template"
+  description = "Github repo to use as a template for the self-service repo in the demo"
+  default     = "richard-russell/tfc-sentinel-template-repo-aws"
 }
 
 variable "organization" {
@@ -23,3 +25,4 @@ variable "github_token" {
   type        = string
   description = "github oauth token for creating repos and attaching policy set"
 }
+

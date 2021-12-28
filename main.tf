@@ -4,6 +4,19 @@ resource "random_pet" "prefix" {
   prefix = var.prefix
 }
 
+locals {
+  # split github path into owner and repository (terraform guides forked repo)
+  tfguides_tmp_list            = split("/", var.tfguides_template)
+  tfguides_template_owner      = local.tfguides_tmp_list[0]
+  tfguides_template_repository = local.tfguides_tmp_list[1]
+
+  # split github path into owner and repository (self-service repo)
+  self_service_tmp_list            = split("/", var.self_service_template)
+  self_service_template_owner      = local.self_service_tmp_list[0]
+  self_service_template_repository = local.self_service_tmp_list[1]
+
+}
+
 # Create copy of terraform-guides repo to use as a source for policy-sets
 # Requires a local fork of terraform-guides configured as a template
 resource "github_repository" "terraform-guides" {
@@ -13,8 +26,21 @@ resource "github_repository" "terraform-guides" {
   visibility = "public"
 
   template {
-    owner      = var.tfguides_template_owner
-    repository = var.tfguides_template_repository
+    owner      = local.tfguides_template_owner
+    repository = local.tfguides_template_repository
+  }
+}
+
+# Create copy of self-service template repo to use as a VCS backed
+resource "github_repository" "self-service" {
+  name        = "${random_pet.prefix.id}-self-service"
+  description = "Self-service repo for ${random_pet.prefix.id} demo"
+
+  visibility = "public"
+
+  template {
+    owner      = local.self_service_template_owner
+    repository = local.self_service_template_repository
   }
 }
 
@@ -43,9 +69,19 @@ resource "tfe_policy_set" "cloud-agnostic" {
   workspace_ids = [tfe_workspace.demo.id]
 
   vcs_repo {
-    identifier         = "${var.tfguides_template_owner}/${var.tfguides_template_repository}"
+    identifier         = github_repository.terraform-guides.full_name
     branch             = "master"
     ingress_submodules = false
+    oauth_token_id     = tfe_oauth_client.demo.oauth_token_id
+  }
+}
+
+# Add module to PMR
+
+resource "tfe_registry_module" "two-tier-registry-module" {
+  vcs_repo {
+    display_identifier = "richard-russell/terraform-aws-tfc-demo-two-tier"
+    identifier         = "richard-russell/terraform-aws-tfc-demo-two-tier"
     oauth_token_id     = tfe_oauth_client.demo.oauth_token_id
   }
 }
