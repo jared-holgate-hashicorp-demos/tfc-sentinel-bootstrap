@@ -4,7 +4,7 @@ variable "prefix" {
   description = "String prefix for the workspace and policy-sets"
 }
 
-variable "tfguides_template" {
+variable "tfguides_fork" {
   type        = string
   default     = "richard-russell/terraform-guides"
   description = "Github path of the fork of hashicorp/terraform-guides used as a template for the policies"

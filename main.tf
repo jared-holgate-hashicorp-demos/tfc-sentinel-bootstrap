@@ -6,9 +6,9 @@ resource "random_pet" "prefix" {
 
 locals {
   # split github path into owner and repository (terraform guides forked repo)
-  tfguides_tmp_list            = split("/", var.tfguides_template)
-  tfguides_template_owner      = local.tfguides_tmp_list[0]
-  tfguides_template_repository = local.tfguides_tmp_list[1]
+  tfguides_tmp_list            = split("/", var.tfguides_fork)
+  tfguides_fork_owner      = local.tfguides_tmp_list[0]
+  tfguides_fork_repository = local.tfguides_tmp_list[1]
 
   # split github path into owner and repository (self-service repo)
   self_service_tmp_list            = split("/", var.self_service_template)
@@ -17,18 +17,16 @@ locals {
 
 }
 
-# Create copy of terraform-guides repo to use as a source for policy-sets
-# Requires a local fork of terraform-guides configured as a template
-resource "github_repository" "terraform-guides" {
-  name        = "${random_pet.prefix.id}-terraform-guides"
-  description = "Copy of terraform-guides for ${random_pet.prefix.id} policy-sets"
+# Existing repo forked from hashicorp/terraform-guides
+data "github_repository" "tfguides-fork" {
+  full_name = var.tfguides_fork
+}
 
-  visibility = "public"
-
-  template {
-    owner      = local.tfguides_template_owner
-    repository = local.tfguides_template_repository
-  }
+# Create branch for self-service policy-set in the terraform-guides fork
+resource "github_branch" "self-service-branch" {
+  repository    = local.tfguides_fork_repository
+  branch        = random_pet.prefix.id
+  source_branch = data.github_repository.tfguides-fork.default_branch
 }
 
 # Create copy of self-service template repo to use as a VCS backed
@@ -49,6 +47,7 @@ resource "tfe_workspace" "demo" {
   name         = random_pet.prefix.id
   organization = var.organization
   tag_names    = ["demo", "selfservice"]
+  auto_apply   = true
   vcs_repo {
     identifier     = github_repository.self-service.full_name
     oauth_token_id = tfe_oauth_client.demo.oauth_token_id
@@ -74,22 +73,21 @@ resource "tfe_policy_set" "cloud-agnostic" {
   workspace_ids = [tfe_workspace.demo.id]
 
   vcs_repo {
-    identifier         = github_repository.terraform-guides.full_name
-    branch             = "master"
+    identifier         = data.github_repository.tfguides-fork.full_name
+    branch             = random_pet.prefix.id
     ingress_submodules = false
     oauth_token_id     = tfe_oauth_client.demo.oauth_token_id
   }
 }
 
-# Add policy-set paramter - the list of orgs whose PMRs we are allowed to use
+# Add policy-set parameter - the list of orgs whose PMRs we are allowed to use
 resource "tfe_policy_set_parameter" "orgs" {
-  key          = "organizations"
-  value        = "[ \"${var.organization}\" ]"
+  key           = "organizations"
+  value         = "[ \"${var.organization}\" ]"
   policy_set_id = tfe_policy_set.cloud-agnostic.id
 }
 
 # Add module to PMR
-
 resource "tfe_registry_module" "two-tier-registry-module" {
   vcs_repo {
     display_identifier = "richard-russell/terraform-aws-tfc-demo-two-tier"
