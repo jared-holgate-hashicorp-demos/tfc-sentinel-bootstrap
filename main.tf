@@ -81,6 +81,13 @@ resource "tfe_policy_set" "cloud-agnostic" {
   }
 }
 
+# Add policy-set paramter - the list of orgs whose PMRs we are allowed to use
+resource "tfe_policy_set_parameter" "orgs" {
+  key          = "organizations"
+  value        = "[ \"${var.organization}\" ]"
+  policy_set_id = tfe_policy_set.cloud-agnostic.id
+}
+
 # Add module to PMR
 
 resource "tfe_registry_module" "two-tier-registry-module" {
