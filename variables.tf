@@ -7,7 +7,7 @@ variable "prefix" {
 variable "tfguides_fork" {
   type        = string
   default     = "richard-russell/terraform-guides"
-  description = "Github path of the fork of hashicorp/terraform-guides used as a template for the policies"
+  description = "Github path of the fork of hashicorp/terraform-guides used for the policies"
 }
 
 variable "self_service_template" {
@@ -15,6 +15,13 @@ variable "self_service_template" {
   description = "Github repo to use as a template for the self-service repo in the demo"
   default     = "richard-russell/tfc-sentinel-template-repo-aws"
 }
+
+# to-do: create trusted workspace
+# variable "trusted_template" {
+#   type        = string
+#   description = "Github repo to use as a template for the trusted repo in the demo"
+#   default     = "richard-russell/tfc-sentinel-template-repo-aws"
+# }
 
 variable "organization" {
   type        = string
