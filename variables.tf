@@ -20,9 +20,9 @@ variable "self_service_template" {
   default     = "richard-russell/tfc-sentinel-template-repo-aws"
 }
 
-variable "tfguides_fork" {
+variable "sentinel_repo" {
   type        = string
-  default     = "richard-russell/terraform-guides"
-  description = "Github path of the fork of hashicorp/terraform-guides used for the policies"
+  default     = "richard-russell/terraform-sentinel-policies"
+  description = "Github path of the fork of hashicorp/terraform-sentinel-policies used for the policies"
 }
 

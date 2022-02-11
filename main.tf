@@ -14,9 +14,9 @@ resource "random_pet" "prefix" {
 
 locals {
   # split github path into owner and repository (terraform guides forked repo)
-  tfguides_tmp_list            = split("/", var.tfguides_fork)
-  tfguides_fork_owner      = local.tfguides_tmp_list[0]
-  tfguides_fork_repository = local.tfguides_tmp_list[1]
+  tfguides_tmp_list        = split("/", var.sentinel_repo)
+  sentinel_repo_owner      = local.tfguides_tmp_list[0]
+  sentinel_repo_repository = local.tfguides_tmp_list[1]
 
   # split github path into owner and repository (self-service repo)
   self_service_tmp_list            = split("/", var.self_service_template)
@@ -30,9 +30,9 @@ locals {
   # trusted_template_repository = local.trusted_tmp_list[1]
 }
 
-# Existing repo forked from hashicorp/terraform-guides
-data "github_repository" "tfguides-fork" {
-  full_name = var.tfguides_fork
+# Existing repo forked from hashicorp/terraform-sentinel-policies
+data "github_repository" "sentinel_repo" {
+  full_name = var.sentinel_repo
 }
 
 # Create OAUTH client to use for VCS-backed repos and attaching policy-sets
@@ -46,11 +46,11 @@ resource "tfe_oauth_client" "demo" {
 
 # Create self-service workspace and associated policies 
 
-# Create branch for self-service policy-set in the terraform-guides fork
+# Create branch for self-service policy-set in the terraform-sentinel-policies fork
 resource "github_branch" "self-service-branch" {
-  repository    = local.tfguides_fork_repository
+  repository    = local.sentinel_repo_repository
   branch        = random_pet.prefix.id
-  source_branch = data.github_repository.tfguides-fork.default_branch
+  source_branch = data.github_repository.sentinel_repo.default_branch
 }
 
 # Create copy of self-service template repo to use for a VCS backed workspace
@@ -82,13 +82,13 @@ resource "tfe_workspace" "selfservice" {
 # Apply policy sets
 resource "tfe_policy_set" "cloud-agnostic" {
   name          = "${random_pet.prefix.id}-cloud-agnostic"
-  description   = "terraform-guides cloud-agnostic third-generation policy set"
+  description   = "terraform-sentinel-policies cloud-agnostic policy set"
   organization  = var.organization
-  policies_path = "governance/third-generation/cloud-agnostic"
+  policies_path = "cloud-agnostic"
   workspace_ids = [tfe_workspace.selfservice.id]
 
   vcs_repo {
-    identifier         = data.github_repository.tfguides-fork.full_name
+    identifier         = data.github_repository.sentinel_repo.full_name
     branch             = random_pet.prefix.id
     ingress_submodules = false
     oauth_token_id     = tfe_oauth_client.demo.oauth_token_id
