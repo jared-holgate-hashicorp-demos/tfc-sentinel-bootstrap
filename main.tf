@@ -45,7 +45,7 @@ resource "github_branch" "self-service-branch" {
   source_branch = data.github_repository.tfguides-fork.default_branch
 }
 
-# Create copy of self-service template repo to use as a VCS backed
+# Create copy of self-service template repo to use for a VCS backed workspace
 resource "github_repository" "self-service" {
   name        = "${random_pet.prefix.id}-self-service"
   description = "Self-service repo for ${random_pet.prefix.id} demo"
