@@ -1,3 +1,11 @@
+provider "github" {
+  token = var.github_token
+}
+
+provider "tfe" {}
+
+provider "random" {}
+
 # Random pet name to use in resource names
 resource "random_pet" "prefix" {
   length = 2

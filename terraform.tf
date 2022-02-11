@@ -22,16 +22,3 @@ terraform {
   }
 
 }
-
-provider "github" {
-  # Configuration options
-  token = var.github_token
-}
-
-provider "tfe" {
-  # Configuration options
-}
-
-provider "random" {
-  # Configuration options
-}
