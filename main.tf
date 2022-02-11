@@ -13,10 +13,10 @@ resource "random_pet" "prefix" {
 }
 
 locals {
-  # split github path into owner and repository (terraform guides forked repo)
-  tfguides_tmp_list        = split("/", var.sentinel_repo)
-  sentinel_repo_owner      = local.tfguides_tmp_list[0]
-  sentinel_repo_repository = local.tfguides_tmp_list[1]
+  # split github path into owner and repository (sentinel policy forked repo)
+  sentinel_repo_tmp_list   = split("/", var.sentinel_repo)
+  sentinel_repo_owner      = local.sentinel_repo_tmp_list[0]
+  sentinel_repo_repository = local.sentinel_repo_tmp_list[1]
 
   # split github path into owner and repository (self-service repo)
   self_service_tmp_list            = split("/", var.self_service_template)
