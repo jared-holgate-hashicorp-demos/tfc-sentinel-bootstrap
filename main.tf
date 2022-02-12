@@ -68,7 +68,7 @@ resource "github_repository" "self-service" {
 
 # Create a TFC self-service workspace
 resource "tfe_workspace" "selfservice" {
-  name         = random_pet.prefix.id
+  name         = "${random_pet.prefix.id}-self-service"
   organization = var.organization
   tag_names    = ["demo", "selfservice"]
   auto_apply   = true
@@ -81,7 +81,7 @@ resource "tfe_workspace" "selfservice" {
 
 # Apply policy sets
 resource "tfe_policy_set" "cloud-agnostic" {
-  name          = "${random_pet.prefix.id}-cloud-agnostic"
+  name          = "${random_pet.prefix.id}-self-service-cloud-agnostic"
   description   = "terraform-sentinel-policies cloud-agnostic policy set"
   organization  = var.organization
   policies_path = "cloud-agnostic"
