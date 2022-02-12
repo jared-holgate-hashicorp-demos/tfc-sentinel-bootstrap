@@ -8,6 +8,12 @@ variable "organization" {
   description = "TFC/TFE organization used for the demo"
 }
 
+variable "pmr-modules" {
+  type        = list(string)
+  description = "List of github repos to publish as modules in the PMR"
+  default     = ["richard-russell/terraform-aws-tfc-demo-two-tier"]
+}
+
 variable "prefix" {
   type        = string
   default     = "tfc-sentinel-demo"

@@ -102,11 +102,12 @@ resource "tfe_policy_set_parameter" "orgs" {
   policy_set_id = tfe_policy_set.cloud-agnostic.id
 }
 
-# Add module to PMR
+# Add modules to PMR
 resource "tfe_registry_module" "two-tier-registry-module" {
+  for_each = toset(var.pmr-modules)
   vcs_repo {
-    display_identifier = "richard-russell/terraform-aws-tfc-demo-two-tier"
-    identifier         = "richard-russell/terraform-aws-tfc-demo-two-tier"
+    display_identifier = each.key
+    identifier         = each.key
     oauth_token_id     = tfe_oauth_client.demo.oauth_token_id
   }
 }
