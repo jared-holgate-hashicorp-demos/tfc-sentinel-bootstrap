@@ -24,7 +24,7 @@ variable "workspace_template" {
 }
 
 data "github_repository" "sentinel_repo" {
-  full_name = var.sentinel_repo
+   full_name = var.sentinel_repo
 }
 
 locals {

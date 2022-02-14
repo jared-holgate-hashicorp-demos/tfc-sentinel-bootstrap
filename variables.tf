@@ -28,7 +28,6 @@ variable "self_service_template" {
 
 variable "sentinel_repo" {
   type        = string
-  default     = "richard-russell/terraform-sentinel-policies"
   description = "Github path of the fork of hashicorp/terraform-sentinel-policies used for the policies"
 }
 
