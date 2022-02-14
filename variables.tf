@@ -14,6 +14,12 @@ variable "pmr-modules" {
   default     = ["richard-russell/terraform-aws-tfc-demo-two-tier"]
 }
 
+variable "oauth_client_token_id" {
+  type = string
+  description = "Existing OAUTH token to re-use. If null, create a new one"
+  default = null
+}
+
 variable "prefix" {
   type        = string
   default     = "tfc-sentinel-demo"
