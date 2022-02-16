@@ -44,6 +44,7 @@ module "self-service-workspace" {
   sentinel_repo      = var.sentinel_repo
   workspace_template = var.self_service_template
   tfe_oauth_token_id = local.tfe_token_id
+  tag_names          = ["self-service", "automated"]
 }
 
 # Create trusted workspace and associated policies 
@@ -54,4 +55,5 @@ module "trusted-workspace" {
   sentinel_repo      = var.sentinel_repo
   workspace_template = var.self_service_template
   tfe_oauth_token_id = local.tfe_token_id
+  tag_names          = ["trusted", "automated"]
 }

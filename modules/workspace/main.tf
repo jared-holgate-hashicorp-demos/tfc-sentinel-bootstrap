@@ -8,6 +8,12 @@ variable "sentinel_repo" {
   description = "The github Sentinel policy repo"
 }
 
+variable "tag_names" {
+  type = list(string)
+  description = "Tags to apply to the workspace"
+  default = ["automated"]
+}
+
 variable "tfe_oauth_token_id" {
     type = string
     description = "Github oauth token id for TFC"
@@ -62,7 +68,7 @@ resource "github_repository" "workspace" {
 resource "tfe_workspace" "workspace" {
   name         = var.workspace_name
   organization = var.organization
-  tag_names    = ["automated"]
+  tag_names    = var.tag_names
   auto_apply   = true
   vcs_repo {
     identifier     = github_repository.workspace.full_name
