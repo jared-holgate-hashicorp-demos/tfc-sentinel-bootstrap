@@ -34,7 +34,7 @@ variable "prefix" {
 variable "self_service_template" {
   type        = string
   description = "Github repo to use as a template for the self-service repo in the demo"
-  default     = "richard-russell/tfc-sentinel-template-repo-aws"
+  default     = "jared-holgate-hashicorp-demos/tfc-sentinel-template-repo-aws"
 }
 
 variable "sentinel_repo" {
