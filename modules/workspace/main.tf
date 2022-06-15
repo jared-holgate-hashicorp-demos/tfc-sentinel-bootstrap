@@ -70,7 +70,10 @@ resource "tfe_workspace" "workspace" {
   organization = var.organization
   tag_names    = var.tag_names
   auto_apply   = true
-
+  vcs_repo {
+    identifier     = github_repository.workspace.full_name
+    oauth_token_id = var.tfe_oauth_token_id
+  }
 }
 
 # Apply policy sets
