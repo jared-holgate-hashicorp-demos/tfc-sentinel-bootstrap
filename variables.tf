@@ -11,7 +11,7 @@ variable "organization" {
 variable "pmr-modules" {
   type        = list(string)
   description = "List of github repos to publish as modules in the PMR"
-  default     = ["richard-russell/terraform-aws-tfc-demo-two-tier"]
+  default     = ["jared-holgate-hashicorp-demos/terraform-aws-tfc-demo-two-tier"]
 }
 
 variable "oauth_client_token_id" {
@@ -35,5 +35,6 @@ variable "self_service_template" {
 variable "sentinel_repo" {
   type        = string
   description = "Github path of the fork of hashicorp/terraform-sentinel-policies used for the policies"
+  default     = "jared-holgate-hashicorp-demos/terraform-sentinel-policies"
 }
 
