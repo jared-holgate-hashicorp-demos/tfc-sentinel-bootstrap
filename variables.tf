@@ -27,7 +27,7 @@ variable "oauth_client_token_id" {
 
 variable "prefix" {
   type        = string
-  default     = "tfc-sentinel-demo"
+  default     = "sentinel-demo"
   description = "String prefix for the workspace and policy-sets"
 }
 

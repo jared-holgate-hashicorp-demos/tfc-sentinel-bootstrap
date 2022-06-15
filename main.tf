@@ -7,12 +7,6 @@ provider "tfe" {}
 
 provider "random" {}
 
-# Random pet name to use in resource names
-resource "random_pet" "prefix" {
-  length = 2
-  prefix = var.prefix
-}
-
 # Create OAUTH client to use for VCS-backed repos and attaching policy-sets
 resource "tfe_oauth_client" "demo" {
   count = var.oauth_client_token_id == null ? 1 : 0
@@ -41,7 +35,7 @@ resource "tfe_registry_module" "two-tier-registry-module" {
 module "self-service-workspace" {
   source             = "./modules/workspace"
   organization       = var.organization
-  workspace_name     = "${random_pet.prefix.id}-self-service"
+  workspace_name     = "${var.prefix}-self-service"
   sentinel_repo      = var.sentinel_repo
   workspace_template = var.self_service_template
   tfe_oauth_token_id = local.tfe_token_id
@@ -52,7 +46,7 @@ module "self-service-workspace" {
 module "trusted-workspace" {
   source             = "./modules/workspace"
   organization       = var.organization
-  workspace_name     = "${random_pet.prefix.id}-trusted"
+  workspace_name     = "${var.prefix}-trusted"
   sentinel_repo      = var.sentinel_repo
   workspace_template = var.self_service_template
   tfe_oauth_token_id = local.tfe_token_id
