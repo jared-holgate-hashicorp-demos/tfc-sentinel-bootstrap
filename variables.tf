@@ -1,8 +1,3 @@
-variable "prefix" {
-  type = string
-  default = "sentinel-demo-"
-}
-
 variable "github_token" {
   type        = string
   description = "github oauth token for creating repos and attaching policy set"
